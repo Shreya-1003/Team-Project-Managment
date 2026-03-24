@@ -1,0 +1,37 @@
+trigger:
+  branches:
+    include:
+      - new-dev
+ 
+pr: none
+ 
+pool:
+  name: Self-Hosted-Agents-Pipelines
+  # vmImage: 'ubuntu-latest'
+ 
+variables:
+  imageName: 'teams-project-management'
+ 
+steps:
+# Checkout code from GitHub
+- checkout: self
+
+# Build and push Docker image to ACR
+- task: Docker@2
+  displayName: Build and Push Image
+  inputs:
+    containerRegistry: 'teams-mgmt-acr-svc'   # <-- your ACR service connection
+    repository: '$(imageName)'
+    command: 'buildAndPush'
+    Dockerfile: 'Dockerfile'
+    tags: |
+      $(Build.BuildId)
+      latest
+ 
+# Deploy to Azure Web App for Containers
+- task: AzureWebAppContainer@1
+  displayName: Deploy to Azure Web App
+  inputs:
+    azureSubscription: 'new-agent-connection'          # <-- same as your other project
+    appName: 'app-ctr-tpm-dev-cen'           # <-- your app service name
+    containers: 'lamaindex.azurecr.io/$(imageName):latest'
