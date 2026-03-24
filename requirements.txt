@@ -1,0 +1,26 @@
+flask
+numpy
+pydantic
+openai
+fastapi
+uvicorn[standard]
+requests
+SQLAlchemy
+python-dotenv
+pydantic-settings
+pyodbc
+uvicorn[standard]
+python-jose[cryptography] 
+azure-storage-blob>=12.19.0
+
+ 
+
+# flask
+# numpy
+# pydantic
+# openai
+# fastapi
+# uvicorn
+# requests
+# SQLAlchemy
+# python-dotenv
